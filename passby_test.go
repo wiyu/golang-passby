@@ -58,6 +58,32 @@ func BenchmarkMemoryStackArg(b *testing.B) {
 	_ = fmt.Sprintf("%v", s.a)
 }
 
+func BenchmarkMemoryStackArgReturns(b *testing.B) {
+	var s S
+
+	f, err := os.Create("stack_arg_returns.out")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	err = trace.Start(f)
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < b.N; i++ {
+		s = byCopy()
+		s = byCopyArgReturns(s)
+	}
+
+	trace.Stop()
+
+	b.StopTimer()
+
+	_ = fmt.Sprintf("%v", s.a)
+}
+
 func BenchmarkMemoryHeap(b *testing.B) {
 	var s *S
 
@@ -107,4 +133,10 @@ func BenchmarkMemoryHeapArg(b *testing.B) {
 	b.StopTimer()
 
 	_ = fmt.Sprintf("%v", s.a)
+}
+
+func TestS(t *testing.T) {
+	// verify the array is allocated
+	s := byCopy()
+	fmt.Printf("%v\n", s)
 }

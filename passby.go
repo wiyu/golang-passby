@@ -6,6 +6,7 @@ type S struct {
 	a, b, c int64
 	d, e, f string
 	g, h, i float64
+	j       [1008192]int64
 }
 
 func byCopy() S {
@@ -26,7 +27,16 @@ func byPointer() *S {
 
 func byCopyArg(s S) {
 	s.a = 1
+	s.j[89] = 10
+	s.j[99] = 10
 	_ = fmt.Sprintf("%v", s.a)
+}
+
+func byCopyArgReturns(s S) S {
+	s.a = 1
+	s.j[899] = 10
+	_ = fmt.Sprintf("%v", s.a)
+	return s
 }
 
 func byPointerArg(s *S) {
