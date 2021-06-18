@@ -13,5 +13,3 @@ echo "--------------------------------------------------------------------------
 
 # Cleanup
 rm bench.txt > /dev/null 2>&1
-rm stack*.out > /dev/null 2>&1
-rm heap*.out > /dev/null 2>&1
